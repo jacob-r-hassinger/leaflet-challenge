@@ -1,6 +1,6 @@
 var map = L.map("map", {
-    center: [0, 0],
-    zoom: 3
+    center: [40, -100],
+    zoom: 4
   });
   
   // Adding tile layer
@@ -13,8 +13,18 @@ var map = L.map("map", {
   
   var link = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson";
   
-  // Grabbing our GeoJSON data..
+    // Grabbing our GeoJSON data..
   d3.json(link, function(data) {
     // Creating a GeoJSON layer with the retrieved data
-    L.geoJson(data).addTo(map);
+    L.geoJson(data, {
+        pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius: feature.properties.mag * 2,
+          fillColor: "yellow",
+          color: "yellow",
+          fillOpacity: 0.8
+        })
+      }
+    }).addTo(map);
   });
+  
